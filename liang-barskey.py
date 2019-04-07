@@ -117,6 +117,52 @@ class liang_barskey:
         print('POINTS WITH t2')
         print('x2 =',x2)
         print('y2 =',y2)
+
+        return[[x1,y1],[x2,y2]]
+
+    def draw_figure(self):
+
+        win=GraphWin('Liang-Barskey',500,500)
+        x_half=win.getWidth()/2
+        y_half=win.getHeight()/2
+        win.setBackground('black')
+
+        
+        #original line
+        v1=self.end_pts[0]
+        v2=self.end_pts[1]
+
+        #final clipped line
+        final=self.clip_line()
+        v3=final[0]
+        v4=final[1]
+
+        #window of figure
+        window=Rectangle(Point(self.xmin+x_half,y_half-self.ymin),Point(self.xmax+x_half,y_half-self.ymax))
+        window.setOutline('white')
+        window.draw(win)
+
+        #drawing of original line,clipped line and shifted axis
+        initial_line=Line(Point(v1.x+x_half,y_half-v1.y),Point(v2.x+x_half,y_half-v2.y))
+        initial_line.draw(win)
+        initial_line.setFill('yellow')
+
+        final_line=Line(Point(v3[0]+x_half,y_half-v3[1]),Point(v4[0]+x_half,y_half-v4[1]))
+        final_line.setFill('green')
+        final_line.draw(win)
+        final_line.setWidth(6)
+
+        
+        #axis            
+        line=Line(Point(0,y_half),Point(500,y_half))
+        line.draw(win)
+        line.setFill('white')
+        line.setWidth(2)
+        
+        line2=Line(Point(x_half,0),Point(x_half,500))
+        line2.setFill('white')
+        line2.draw(win)
+        line2.setWidth(2)
     
 def main():
 
@@ -132,6 +178,7 @@ def main():
     l.clip_line()
     print('--------------------------------------------- \n')
 
+    l.draw_figure()
 if __name__=='__main__':
     main()
         
