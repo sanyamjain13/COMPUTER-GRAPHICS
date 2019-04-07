@@ -1,5 +1,5 @@
 from graphics import *
-
+import time
 class vertex:
 
     def __init__(self,x,y):
@@ -268,6 +268,52 @@ class sutherland_clip:
 
         return 'UPDATED NODES OF NEW CLIPPED POLYGON : '+str(lst)
 
+    def change_axis(self):
+
+        win=GraphWin('draw',500,500)
+        x=win.getWidth()/2
+        y=win.getHeight()/2
+        
+        return [x,y,win]
+
+    def fiure_draw(self):
+        lst=[]
+        window=self.change_axis()
+
+        x_half=window[0]
+        y_half=window[1]
+        win=window[2]
+        win.setBackground('black')
+
+        rect=Rectangle(Point(self.xmin+x_half,y_half-self.xmin),Point(self.xmax+x_half,y_half-self.ymax))
+        rect.setOutline('white')
+        rect.draw(win)
+        
+        #initial figure
+        for i in range(len(self.initial_figure)):
+            v=self.initial_figure[i]
+            w=self.initial_figure[(i+1)%len(self.initial_figure)]
+            line=Line(Point(v.x+x_half,y_half-v.y),Point(w.x+x_half,y_half-w.y))
+            line.setFill('red')
+            line.draw(win)
+
+        #axis            
+        line=Line(Point(0,y_half),Point(500,y_half))
+        line.draw(win)
+        line.setFill('white')
+        line2=Line(Point(x_half,0),Point(x_half,500))
+        line2.setFill('white')
+        line2.draw(win)
+
+
+        #final clipped figure
+        for i in range(len(self.polygon_nodes)):
+            v=self.polygon_nodes[i]
+            w=self.polygon_nodes[(i+1)%len(self.polygon_nodes)]
+            line=Line(Point(v.x+x_half,y_half-v.y),Point(w.x+x_half,y_half-w.y))
+            line.setFill('yellow')
+            line.draw(win)
+        
 def main():
 
     s=sutherland_clip()
@@ -289,6 +335,8 @@ def main():
     print('BOTTOM EDGE :---------------')
     print(s,'\n')
 
+    s.line_draw()
+    
 if __name__=='__main__':
 
     main()
